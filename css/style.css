@@ -1,0 +1,999 @@
+/* ==========================================================================
+   aliexpress_sookyeong - 알리익스프레스 한국 셀러 관리 포털 스타일시트
+   (Google Sheets 연동 및 콘텐츠 구조 개선 명세 반영)
+   ========================================================================== */
+
+/* 1. 디자인 토큰 (CSS 변수) */
+:root {
+  --primary-color: #FF4747;
+  --primary-hover: #E03636;
+  --accent-orange: #FF6A00;
+  --bg-color: #F5F7FA;
+  --card-bg: #FFFFFF;
+  --text-main: #1E293B;
+  --text-muted: #64748B;
+  --border-color: #E2E8F0;
+  
+  /* 행사 유형별 브랜드 색상 */
+  --type-100b: #EF4444;    /* 천억페스타 - 빨강 */
+  --type-early: #10B981;   /* 얼리버드 - 초록 */
+  --type-choice: #3B82F6;  /* 초이스데이 - 파랑 */
+  --type-payday: #8B5CF6;  /* 페이데이·알급날 - 보라 */
+  --type-etc: #F59E0B;     /* 기타 - 주황 */
+
+  /* 상태별 색상 */
+  --status-upcoming: #3B82F6;
+  --status-open: #10B981;
+  --status-imminent: #EF4444;
+  --status-closed: #64748B;
+  --status-running: #8B5CF6;
+  --status-ended: #94A3B8;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* 2. 리셋 및 기본 스타일 */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  line-height: 1.6;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+/* 3. 레이아웃 컨테이너 */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* 4. 헤더 및 네비게이션 */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: #FFFFFF;
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+}
+
+.nav-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--primary-color);
+}
+
+.brand-logo .logo-badge {
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-orange));
+  color: #FFF;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  list-style: none;
+}
+
+.nav-link {
+  display: block;
+  padding: 8px 14px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--primary-color);
+  background-color: rgba(255, 71, 71, 0.08);
+}
+
+/* 모바일 햄버거 버튼 */
+.hamburger-btn {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 32px;
+  height: 32px;
+  padding: 4px;
+}
+
+.hamburger-btn span {
+  width: 100%;
+  height: 3px;
+  background-color: var(--text-main);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+/* 5. 최상단 중요 경고 알림 박스 */
+.top-notice-banner {
+  background-color: #FEF2F2;
+  border-bottom: 2px solid #FCA5A5;
+  padding: 12px 0;
+}
+
+.banner-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.banner-text {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  color: #991B1B;
+  font-size: 0.95rem;
+}
+
+.banner-text .alert-icon {
+  background-color: #EF4444;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+}
+
+.banner-path-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #FFFFFF;
+  border: 1px solid #FCA5A5;
+  color: #991B1B;
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.banner-path-btn:hover {
+  background-color: #EF4444;
+  color: #FFFFFF;
+  border-color: #EF4444;
+}
+
+/* 6. 메인 콘텐츠 섹션 관리를 위한 SPA 스타일 */
+.content-section {
+  display: none;
+  padding: 40px 0 60px 0;
+}
+
+.content-section.active {
+  display: block;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.section-header {
+  margin-bottom: 30px;
+}
+
+.section-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-subtitle {
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+/* 7. 카드 그리드 및 카드 요소 */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+/* 상태 배지 */
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.badge-upcoming { background-color: #E0F2FE; color: var(--status-upcoming); }
+.badge-open { background-color: #D1FAE5; color: #065F46; }
+.badge-imminent { 
+  background-color: #FEE2E2; 
+  color: var(--status-imminent); 
+  animation: pulse 2s infinite; 
+}
+.badge-closed { background-color: #F1F5F9; color: var(--status-closed); }
+.badge-running { background-color: #F3E8FF; color: var(--status-running); }
+.badge-ended { background-color: #E2E8F0; color: var(--status-ended); }
+
+.badge-urgent { background-color: #EF4444; color: #FFFFFF; }
+.badge-important { background-color: #F59E0B; color: #FFFFFF; }
+.badge-general { background-color: #3B82F6; color: #FFFFFF; }
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+  70% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+/* 8. 행사 전용 카드 */
+.campaign-card .card-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: var(--text-main);
+}
+
+.campaign-info-list {
+  list-style: none;
+  margin-bottom: 20px;
+  flex-grow: 1;
+}
+
+.campaign-info-list li {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  padding: 6px 0;
+  border-bottom: 1px stroke #F1F5F9;
+}
+
+.campaign-info-list .label {
+  color: var(--text-muted);
+}
+
+.campaign-info-list .value {
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.countdown-box {
+  background-color: #FFF7ED;
+  border: 1px solid #FFEDD5;
+  color: #C2410C;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.btn-apply {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 12px;
+  background-color: var(--primary-color);
+  color: #FFFFFF;
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  transition: background-color 0.2s ease;
+  min-height: 44px;
+}
+
+.btn-apply:hover {
+  background-color: var(--primary-hover);
+}
+
+.btn-apply.disabled {
+  background-color: #CBD5E1;
+  cursor: not-allowed;
+}
+
+/* 9. 뷰 스위처 (목록 보기 / 달력 보기) */
+.view-toggle-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.view-btn-group {
+  display: flex;
+  background-color: #E2E8F0;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  gap: 4px;
+}
+
+.view-btn {
+  padding: 8px 16px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  transition: all 0.2s ease;
+}
+
+.view-btn.active {
+  background-color: #FFFFFF;
+  color: var(--primary-color);
+  box-shadow: var(--shadow-sm);
+}
+
+/* 10. 월간 행사 캘린더 그리드 */
+.calendar-wrapper {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.calendar-month-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.month-nav-btn {
+  background-color: #F1F5F9;
+  border: 1px solid var(--border-color);
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  color: var(--text-main);
+  transition: all 0.2s ease;
+}
+
+.month-nav-btn:hover {
+  background-color: var(--primary-color);
+  color: #FFFFFF;
+}
+
+.calendar-legend {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  border-top: 1px solid var(--border-color);
+  border-left: 1px solid var(--border-color);
+}
+
+.calendar-day-header {
+  background-color: #F8FAFC;
+  padding: 12px 6px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  border-right: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.calendar-day-cell {
+  min-height: 100px;
+  padding: 8px 6px;
+  background-color: #FFFFFF;
+  border-right: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.calendar-day-cell.other-month {
+  background-color: #FAF5FF;
+  opacity: 0.5;
+}
+
+.calendar-day-cell.today {
+  background-color: #FFFBEB;
+}
+
+.day-number {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.calendar-day-cell.today .day-number {
+  color: var(--primary-color);
+  background-color: #FEE2E2;
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+
+.calendar-event-pill {
+  font-size: 0.75rem;
+  padding: 3px 6px;
+  border-radius: 4px;
+  color: #FFFFFF;
+  font-weight: 600;
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: opacity 0.2s ease;
+}
+
+.calendar-event-pill:hover {
+  opacity: 0.85;
+}
+
+/* 행사 신청기간 (점선 border) vs 행사기간 (실선) */
+.pill-app-period {
+  border: 1px dashed rgba(255, 255, 255, 0.8);
+  opacity: 0.85;
+}
+
+.pill-event-period {
+  border: 1px solid transparent;
+  font-weight: 700;
+}
+
+.event-type-100b { background-color: var(--type-100b); }
+.event-type-early { background-color: var(--type-early); }
+.event-type-choice { background-color: var(--type-choice); }
+.event-type-payday { background-color: var(--type-payday); }
+.event-type-etc { background-color: var(--type-etc); }
+
+/* 11. 모달 팝업 레이아웃 */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(15, 23, 42, 0.6);
+  z-index: 2000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-backdrop.open {
+  display: flex;
+  animation: fadeIn 0.2s ease;
+}
+
+.modal-box {
+  background-color: #FFFFFF;
+  border-radius: var(--radius-lg);
+  max-width: 550px;
+  width: 100%;
+  padding: 30px;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 1.5rem;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+/* 12. 프로모션 가이드 비교 표 (Comparison Matrix) */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  background-color: #FFFFFF;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  margin-bottom: 30px;
+}
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.comparison-table th,
+.comparison-table td {
+  padding: 16px;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 0.95rem;
+}
+
+.comparison-table th {
+  background-color: #F8FAFC;
+  font-weight: 700;
+  color: var(--text-main);
+  white-space: nowrap;
+}
+
+.comparison-table tr:hover {
+  background-color: #F1F5F9;
+}
+
+/* 13. 패널티 표 */
+.penalty-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.penalty-table th,
+.penalty-table td {
+  padding: 14px;
+  border: 1px solid var(--border-color);
+  font-size: 0.9rem;
+}
+
+.penalty-table th {
+  background-color: #FEF2F2;
+  color: #991B1B;
+  font-weight: 700;
+}
+
+/* 14. 메인 화면 구성품 (빠른 메뉴 & 최근 업데이트) */
+.quick-menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.quick-menu-btn {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-color);
+  padding: 18px 16px;
+  border-radius: var(--radius-md);
+  text-align: center;
+  font-weight: 700;
+  color: var(--text-main);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+  min-height: 44px;
+}
+
+.quick-menu-btn:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.recent-updates-box {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 24px;
+}
+
+.recent-updates-list {
+  list-style: none;
+}
+
+.recent-updates-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  gap: 16px;
+  font-size: 0.95rem;
+}
+
+.recent-updates-list li:last-child {
+  border-bottom: none;
+}
+
+.recent-updates-list .date {
+  color: var(--text-muted);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* 15. 필터 탭 스타일 */
+.filter-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  padding: 8px 18px;
+  border-radius: 20px;
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+  background-color: var(--primary-color);
+  color: #FFFFFF;
+  border-color: var(--primary-color);
+}
+
+/* 16. 처음 시작하기 (체크리스트) */
+.checklist-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.checklist-item {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  transition: all 0.2s ease;
+}
+
+.checklist-item.completed {
+  background-color: #F8FAFC;
+  border-color: #CBD5E1;
+  opacity: 0.8;
+}
+
+.checklist-checkbox {
+  width: 22px;
+  height: 22px;
+  margin-top: 2px;
+  cursor: pointer;
+  accent-color: var(--primary-color);
+}
+
+.checklist-content {
+  flex-grow: 1;
+}
+
+.checklist-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.checklist-item.completed .checklist-title {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.checklist-desc {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  white-space: pre-line;
+  margin-bottom: 10px;
+}
+
+/* 17. 공지사항 카테고리별 카드 */
+.notice-box {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+.notice-box.badge-urgent { border-left: 5px solid #EF4444; }
+.notice-box.badge-important { border-left: 5px solid #F59E0B; }
+.notice-box.badge-general { border-left: 5px solid #3B82F6; }
+
+.notice-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.notice-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.notice-body {
+  font-size: 0.95rem;
+  color: var(--text-main);
+  white-space: pre-line;
+  line-height: 1.7;
+}
+
+/* 18. FAQ 검색 & 아코디언 */
+.faq-search-box {
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.faq-search-input {
+  width: 100%;
+  padding: 16px 20px;
+  font-size: 1.05rem;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.faq-search-input:focus {
+  border-color: var(--primary-color);
+}
+
+.accordion-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.accordion-item {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.accordion-header {
+  width: 100%;
+  padding: 20px;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text-main);
+  background-color: #FFFFFF;
+  transition: background-color 0.2s ease;
+}
+
+.accordion-header:hover {
+  background-color: #F8FAFC;
+}
+
+.accordion-icon {
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+}
+
+.accordion-item.open .accordion-icon {
+  transform: rotate(180deg);
+}
+
+.accordion-body {
+  display: none;
+  padding: 0 20px 20px 20px;
+  border-top: 1px solid #F1F5F9;
+  font-size: 0.95rem;
+  color: #334155;
+  white-space: pre-line;
+  line-height: 1.7;
+}
+
+.accordion-item.open .accordion-body {
+  display: block;
+  animation: fadeIn 0.2s ease;
+}
+
+.faq-keywords {
+  margin-top: 12px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.keyword-tag {
+  background-color: #F1F5F9;
+  color: var(--text-muted);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.empty-results {
+  text-align: center;
+  padding: 40px;
+  background-color: #FFFFFF;
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+/* 19. 복사 완료 토스트 메시지 */
+.toast-msg {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background-color: #1E293B;
+  color: #FFFFFF;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 3000;
+}
+
+.toast-msg.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* 20. 푸터 */
+.site-footer {
+  background-color: #1E293B;
+  color: #94A3B8;
+  padding: 40px 0;
+  margin-top: 60px;
+  font-size: 0.9rem;
+  border-top: 1px solid #334155;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+/* 21. 모바일 반응형 처리 */
+@media (max-width: 768px) {
+  .hamburger-btn {
+    display: flex;
+  }
+
+  .nav-menu {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background-color: #FFFFFF;
+    flex-direction: column;
+    padding: 20px;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: var(--shadow-md);
+    display: none;
+  }
+
+  .nav-menu.open {
+    display: flex;
+  }
+
+  .nav-link {
+    width: 100%;
+    text-align: center;
+    padding: 14px;
+  }
+
+  .banner-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .banner-path-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .quick-menu-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .calendar-day-cell {
+    min-height: 70px;
+    padding: 4px 2px;
+  }
+
+  .calendar-event-pill {
+    font-size: 0.65rem;
+    padding: 2px 4px;
+  }
+}
