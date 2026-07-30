@@ -101,12 +101,16 @@
       </div>
     </section>
 
-    <!-- 2. 진행 중인 행사 섹션 (목록 보기 / 달력 보기 전환) -->
-    <section id="campaigns" class="content-section">
-      <div class="section-header">
-        <h2 class="section-title">🎉 진행 중인 행사</h2>
-        <p class="section-subtitle">목록 또는 월간 달력 보기로 전체 행사 일정을 한눈에 확인하세요.</p>
-      </div>
+  // [달력 보기] 버튼 클릭 시 달력 탭으로 전환 + 최초 1회 렌더링
+document.getElementById('btn-view-calendar')?.addEventListener('click', () => {
+  // 탭 전환(이미 구현되어 있으면 생략 가능)
+  document.getElementById('campaign-list-view')?.style && (document.getElementById('campaign-list-view').style.display = 'none');
+  document.getElementById('campaign-calendar-view')?.style && (document.getElementById('campaign-calendar-view').style.display = '');
+
+  // FullCalendar 초기화(중복 방지 로직은 initCalendar 내부에 있음)
+  setTimeout(initCalendar, 0);
+});
+  
 
       <!-- 뷰 스위처 토글 바 -->
       <div class="view-toggle-bar">
