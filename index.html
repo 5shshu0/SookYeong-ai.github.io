@@ -8,6 +8,18 @@
   
   <!-- CSS 연결 -->
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css">
+<style>
+  /* 이벤트 타입 색상(사이트의 CSS 변수와 매핑) */
+  .fc .type-100b   { background: var(--type-100b);   border-color: var(--type-100b);   color:#fff; }
+  .fc .type-early  { background: var(--type-early);  border-color: var(--type-early);  color:#fff; }
+  .fc .type-choice { background: var(--type-choice); border-color: var(--type-choice); color:#fff; }
+  .fc .type-payday { background: var(--type-payday); border-color: var(--type-payday); color:#fff; }
+  /* 신청기간 점선 */
+  .fc .period-apply { background: transparent!important; border: 2px dotted currentColor; color: inherit; }
+  /* 제목 말줄임 */
+  .fc .fc-event-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+</style>
 </head>
 <body>
 
@@ -28,7 +40,7 @@
   <header class="site-header">
     <div class="container nav-wrapper">
       <a href="#" class="brand-logo" onclick="switchSection('home'); return false;">
-        <span>FMCG_sookyeong ACM potal</span>
+        <span>FMCG_오숙영ACM</span>
         <span class="logo-badge">셀러 포털</span>
       </a>
 
@@ -137,20 +149,35 @@
             <div class="legend-item"><span style="border-bottom: 2px solid #64748B;">실선</span>: 행사기간</div>
           </div>
 
-          <!-- 달력 그리드 -->
-          <div class="calendar-grid">
-            <div class="calendar-day-header" style="color: #EF4444;">일</div>
-            <div class="calendar-day-header">월</div>
-            <div class="calendar-day-header">화</div>
-            <div class="calendar-day-header">수</div>
-            <div class="calendar-day-header">목</div>
-            <div class="calendar-day-header">금</div>
-            <div class="calendar-day-header" style="color: #3B82F6;">토</div>
-            
-            <!-- JS로 날짜 및 행사 바 렌더링 -->
-            <div id="calendar-grid-cells" style="display: contents;"></div>
-          </div>
-        </div>
+<!-- 2.2 달력 보기 컨테이너 -->
+<div id="campaign-calendar-view" style="display: none;">
+  <div class="calendar-wrapper">
+    <div class="calendar-header">
+      <button class="month-nav-btn" id="prev-month-btn">◀ 이전달</button>
+      <h3 class="calendar-month-title" id="calendar-month-title">2026년 7월</h3>
+      <button class="month-nav-btn" id="next-month-btn">다음달 ▶</button>
+    </div>
+
+    <!-- 범례 (Legend) -->
+    <div class="calendar-legend">
+      <div class="legend-item"><span class="legend-color" style="background-color: var(--type-100b);"></span> 천억페스타</div>
+      <div class="legend-item"><span class="legend-color" style="background-color: var(--type-early);"></span> 얼리버드</div>
+      <div class="legend-item"><span class="legend-color" style="background-color: var(--type-choice);"></span> 초이스데이</div>
+      <div class="legend-item"><span class="legend-color" style="background-color: var(--type-payday);"></span> 페이데이</div>
+      <div class="legend-item" style="margin-left: auto;"><span style="border-bottom: 2px dashed #64748B;">점선</span>: 신청기간</div>
+      <div class="legend-item"><span style="border-bottom: 2px solid #64748B;">실선</span>: 행사기간</div>
+    </div>
+
+    <!-- FullCalendar 마운트 위치 -->
+    <div id="fc-calendar"></div>
+  </div>
+</div>
+
+    <!-- FullCalendar 마운트 위치 -->
+    <div id="fc-calendar"></div>
+  </div>
+</div>
+          
       </div>
     </section>
 
