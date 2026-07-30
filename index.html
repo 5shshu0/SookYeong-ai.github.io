@@ -318,8 +318,42 @@
     </div>
   </footer>
 
-  <!-- 데이터 및 앱 스크립트 연결 -->
-  <script src="js/data.js"></script>
-  <script src="js/app.js"></script>
+ <!-- 데이터 및 앱 스크립트 연결 -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>
+/* ==== FullCalendar 초기화 ==== */
+let fc;
+
+function initCalendar() {
+  if (fc) { updateCalendarTitle(); return; }
+  const el = document.getElementById('fc-calendar');
+  if (!el) return;
+
+  fc = new FullCalendar.Calendar(el, {
+    locale:'ko', timeZone:'local', initialView:'dayGridMonth',
+    initialDate:'2026-07-01', headerToolbar:false, dayMaxEvents:3, height:'auto',
+    events:getCalendarEvents()
+  });
+  fc.render(); updateCalendarTitle();
+
+  document.getElementById('prev-month-btn')?.addEventListener('click',()=>{fc.prev(); updateCalendarTitle();});
+  document.getElementById('next-month-btn')?.addEventListener('click',()=>{fc.next(); updateCalendarTitle();});
+}
+
+function updateCalendarTitle(){ const t=document.getElementById('calendar-month-title'); if(fc&&t) t.textContent=fc.view.title; }
+
+function getCalendarEvents(){
+  return [
+    {title:'[상품] 7월 얼리버드 전체', start:'2026-07-01', end:'2026-08-01', allDay:true, classNames:['type-early']},
+    {title:'[행사] 7월 얼리버드 전체', start:'2026-07-01', end:'2026-08-01', allDay:true, classNames:['type-early']},
+    {title:'[행사] 8월 초이스데이 신청', start:'2026-07-10', end:'2026-07-20', allDay:true, classNames:['type-choice','period-apply']},
+    {title:'[행사] 천억페스타 8/28', start:'2026-07-18', end:'2026-08-29', allDay:true, classNames:['type-100b']}
+  ];
+}
+
+// [4번] "달력 보기" 버튼에서 최초 1회 렌더링
+document.getElementById('btn-view-calendar')?.addEventListener('click',()=>setTimeout(initCalendar,0));
